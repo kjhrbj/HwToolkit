@@ -1,0 +1,29 @@
+<root>
+	<context tag="CreateSeamCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="angle" label="Angle:" type="real" default="45" state="normal" optionname="angle" command="hwctx OnSelectionChange"/>
+                        <item tag="height" label="Seam Height:" type="real" default="0" optionname="height" command="hwctx OnSelectionChange"/>
+                        <item tag="double" label=" Double Side Seam" type="boolcheck" default="0" state="normal" optionname="double" command="hwctx OnSelectionChange"/>
+                        <item tag="auto_height" label=" Auto Seam Height" type="boolcheck" default="1" state="normal" optionname="auto_height" command="hwctx auto_seam_height"/>
+                        <item tag="offset_flag" label=" Offset Seam Line" type="boolcheck" default="1" state="normal" optionname="offset_flag" command="hwctx OnSelectionChange"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selline" type="entityselector" selectionname="LineSelector" entitytypes="Line" defaultentity="Line" hmselectionmode="append"/>
+            <item tag="selsurf" type="entityselector" selectorlabel="Surface" selectionname="SurfSelector" entitytypes="Surface" defaultentity="Surface" hmselectionmode="single"/>
+
+            <item tag="reverse" type="button" label="Reverse" command="hwctx reverse"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

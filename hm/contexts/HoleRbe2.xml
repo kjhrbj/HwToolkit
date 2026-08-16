@@ -1,0 +1,28 @@
+<root>
+	<context tag="HoleRbe2Ctx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+        <guidebar>
+            <item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="Type" label="Type:" type="combobox" default="Rbe2-Rbe2" values="Rbe2-Rbe2 Rbe2-Spring" state="normal" optionname="type"/>
+                        <item tag="Name" label="Component:" type="string" default="HoleConnector" state="normal" optionname="name" />
+                        <item tag="MaxDiameter" label="Max Diameter:" type="real" default="32" state="normal" optionname="max_d" />
+                        <item tag="MinDiameter" label="Min Diameter:" type="real" default="1" state="normal" optionname="min_d" />
+                        <item tag="Tolerance" label="Tolerance:" type="real" default="32" state="normal" optionname="tolerance" />
+                        <item tag="Tube" label=" Detect 3D Element's Hole" type="boolcheck" default="true" state="normal" optionname="tube" />
+                        <item tag="Connect" label=" Only on Multiple Layer Hole" type="boolcheck" default="true" state="normal" optionname="connect" />
+                    </options>
+                </popup>
+            </item>
+
+			<item tag="selelems" type="entityselector" selectionname="ElemsSelector" entitytypes="Elements" defaultentity="Elements" hmselectionmode="append"/>
+
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+
+	</context>
+</root>

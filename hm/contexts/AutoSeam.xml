@@ -1,0 +1,22 @@
+<root>
+	<context tag="AutoSeamCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="tolerance" label="Tolerance:" type="string" default="10" state="normal" optionname="tolerance"/>
+                        <item tag="type" label="Creation Type:" type="combobox" default="Seam" values="Seam Extension Seam+Extension" state="normal" optionname="type"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selsurf" type="entityselector" selectionname="SurfsSelector" entitytypes="Surface" defaultentity="Surface" hmselectionmode="append"/>
+
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

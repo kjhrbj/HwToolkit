@@ -1,0 +1,16 @@
+# Python 虚拟环境
+.venv/
+
+# 官方帮助文档提取版（本地 AI 开发参考，不入库 / 不推送远程）
+HelpDocforAi/
+
+# 二进制测试产物（HyperView 私有格式，可再生）
+TestMode/**/*.h3d
+
+# 系统 / 编辑器杂项
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.pyc
+__pycache__/

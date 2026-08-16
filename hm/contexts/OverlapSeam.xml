@@ -1,0 +1,24 @@
+<root>
+	<context tag="OverlapSeamCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="height" label="Seam Height:" type="real" default="0" optionname="height" command="hwctx OnSelectionChange"/>
+                        <item tag="auto_height" label=" Auto Seam Height" type="boolcheck" default="1" state="normal" optionname="auto_height" command="hwctx auto_seam_height"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selline1" type="entityselector" selectorlabel="Source Lines" selectionname="LineSelector1" entitytypes="Line" defaultentity="Line" hmselectionmode="append"/>
+            <item tag="selline2" type="entityselector" selectorlabel="Target Line" selectionname="LineSelector2" entitytypes="Line" defaultentity="Line" hmselectionmode="single"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

@@ -1,0 +1,32 @@
+<root>
+	<context tag="CreateMassPointCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+            <item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="tag" label="Create Tag" type="boolcheck" default="1" state="normal" optionname="tag"/>
+                        <item tag="move" label="Move Solids to New Component" type="boolcheck" default="1" state="normal" optionname="move"/>
+                        <item tag="one" label="Create One MassPoint" type="boolcheck" default="1" state="normal" optionname="one"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selsolids" type="entityselector" selectionname="SolidsSelector" entitytypes="Solids" defaultentity="Solids" hmselectionmode="append"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+
+        <microdialog tag="dialog">
+            <layout tag="dialog_layout" columns="2" >
+                <item tag="set_density_label" type="label" label="Density:" visible="true"/>
+                <item tag="set_density_entry" type="entry" width="80" inputtype="numeric" default="7.85e-9" optionname="density"/>
+
+            </layout>
+		</microdialog>
+	</context>
+</root>

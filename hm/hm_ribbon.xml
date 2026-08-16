@@ -1,0 +1,56 @@
+<root>
+    <actionlist>
+        <action tag="TangentCurve" text="Tangent Curve" tooltip="Create tangent curve on selected lines, and project the curve to selected surface" image="TangentCurve-80.png" command="scontext: TangentCurveCtx"/>
+        <action tag="ProjectToSurf" text="Project to Surface" tooltip="Project entities to surface" image="ProjectToSurface-80.png" command="scontext: ProjectionToSurfCtx"/>
+        <action tag="CreateSeam" text="Create Seam" tooltip="Create seam on selected line and surface" image="CreateSeam-64.png" command="scontext: CreateSeamCtx"/>
+        <action tag="DiscontinueSeam" text="Discontinue Seam" tooltip="Create discontinue seam on selected line and surface" image="DiscontinueSeam-64.png" command="scontext: DiscontinueSeamCtx"/>
+        <action tag="OverlapSeam" text="Overlap Seam" tooltip="Create seam on selected line" image="OverlapSeam-64.png" command="scontext: OverlapSeamCtx"/>
+        <action tag="AutoSeam" text="Auto Seam" tooltip="Automatically create seam" image="AutoSeam-64.png" command="scontext: AutoSeamCtx"/>
+
+        <action tag="SmallSolids" text="Small Solids" tooltip="Detect small solids, and puts them into a component" image="SmallSolids-80.png" command="scontext: SmallSolidsCtx"/>
+        <action tag="ThicknessAssign" text="Thickness Assign" tooltip="Move midsurfaces to different component, and assign thickness property" image="ThicknessAssign-80.png" command="scontext: ThicknessAssignCtx"/>
+        <action tag="CreateMassPoint" text="Mass Point" tooltip="Select solids to create mass points automatically at their centroids" image="MassPoint-80.png" command="scontext: CreateMassPointCtx"/>
+
+        <action tag="BadElement" text="Bad Element" tooltip="Puts 2D elements of bad quality to a specific set" image="Icon_80.png" command="scontext: BadElementCtx"/>
+        <action tag="HoleRbe2" text="Hole Rbe2" tooltip="Detect holes among selected elements, than create Rbe2 on proper hole" image="HoleRbe2-64.png" command="scontext: HoleRbe2Ctx"/>
+        <action tag="CreateRbe2" text="Create Rbe2" tooltip="Create new rbe2 to link selected element" image="CreateRbe2-64.png" command="scontext: CreateRbe2Ctx"/>
+        <action tag="CreateRbe3" text="Create Rbe3" tooltip="Create new rbe3, mass element will automatically been main node." image="CreateRbe2-64.png" command="scontext: CreateRbe3Ctx"/>
+        <action tag="CreateJoint" text="Create Joint" tooltip="Create joint between two nodes group" image="CreateJoint-64.png" command="scontext: CreateJointCtx"/>
+        <action tag="CreateStep" text="Create Step" tooltip="Create loadstep, and create SPC/D on independent node of selected Rbe2 or all nodes of general elements" image="CreateStep-80.png" command="scontext: CreateStepCtx"/>
+        <action tag="StepFromCSV" text="Step from CSV" tooltip="Create Step From CSV" image="CreateStep-80.png" command="scontext: StepFromCSVCtx"/> 
+
+        <action tag="CopyMove" text="Copy Move" tooltip="Copy entities and move along a direction (linear array)" image="CopyMove-80.png" command="scontext: CopyMoveCtx"/>
+
+    </actionlist>
+    <page tag="Page1" text="HM Tools">
+        <group tag="Group1" text="Model Pre-edit">
+            <action actiontag="SmallSolids"/>
+            <action actiontag="CreateMassPoint"/>
+            <action actiontag="ThicknessAssign"/>
+        </group>
+        <group tag="Group2" text="Geo Edit">
+            <action actiontag="TangentCurve"/>
+            <action actiontag="ProjectToSurf"/>
+            <action actiontag="CopyMove"/>
+            <secondaryribbon tag="Seam" text="Create Seam" defaultaction="CreateSeam" tooltip="Create seam" image="CreateSeam-80.png">
+				<action actiontag="CreateSeam"/>
+				<action actiontag="DiscontinueSeam"/>
+                <action actiontag="OverlapSeam"/>
+                <action actiontag="AutoSeam"/>
+			</secondaryribbon>
+        </group>
+        <group tag="Group3" text="Model Post-edit" visible="expr: $HMPROFILE in {OptiStruct}">
+            <!-- <action actiontag="BadElement"/> -->
+            <secondaryribbon tag="Rbe2" text="Create Rbe2" defaultaction="CreateRbe2" tooltip="Create Rbe2" image="CreateRbe2-80.png">
+				<action actiontag="CreateRbe2"/>
+                <action actiontag="HoleRbe2"/>
+                <action actiontag="CreateJoint"/>
+                <action actiontag="CreateRbe3"/>
+			</secondaryribbon>
+            <actiongroup tag="CreateStep-Menu" text="Create Step" tooltip="" type="menu" dropdownsmallicons="true" defaultaction="CreateStep" image="CreateStep-80.png">
+				<action actiontag="CreateStep"/>
+				<action actiontag="StepFromCSV"/>
+			</actiongroup>
+        </group>
+    </page>
+</root>

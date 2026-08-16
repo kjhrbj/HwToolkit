@@ -1,0 +1,10 @@
+<root>
+    <actionlist>
+ 		<action tag="SaveFile" tooltip="Save File With Timestamp" image="SaveFile-32.png" command="tcl: HmToolkit::Toolbar::save_file"/>
+		<action tag="Similar" tooltip="Find Similar Surfaces or Solids" image="Similar-32.png" command="tcl: HmToolkit::Toolbar::similar"/>
+    </actionlist>
+	<toolbar tag="ToolBar" location="left">
+		<item actiontag="SaveFile"/>
+		<item actiontag="Similar"/>
+	</toolbar>
+</root>

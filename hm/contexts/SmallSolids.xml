@@ -1,0 +1,19 @@
+<root>
+	<context tag="SmallSolidsCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+        <guidebar>
+            <item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="threshold" label="Threshold(%):" type="real" default="10" state="normal" optionname="threshold" />
+                    </options>
+                </popup>
+            </item>
+			<item tag="selsolids" type="entityselector" selectionname="SolidsSelector" entitytypes="Solids" defaultentity="Solids" hmselectionmode="append"/>
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

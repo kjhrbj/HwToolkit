@@ -1,0 +1,16 @@
+<root>
+	<context tag="CopyMoveCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+            <item tag="selentities" type="entityselector" selectorlabel="Entities" selectionname="EntitiesSelector" entitytypes="Lines Surfaces Solids Nodes Elements" defaultentity="Surfaces" hmselectionmode="append"/>
+            <item tag="selstart" type="entityselector" selectorlabel="Start Point" selectionname="StartSelector" entitytypes="Locations" defaultentity="Locations" hmselectionmode="single"/>
+            <item tag="selend" type="entityselector" selectorlabel="End Points" selectionname="EndSelector" entitytypes="Locations" defaultentity="Locations" hmselectionmode="append"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed"/>
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

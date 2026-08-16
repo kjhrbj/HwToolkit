@@ -1,0 +1,22 @@
+<root>
+	<context tag="ThicknessAssignCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+        <guidebar>
+            <item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="incr" label="Thickness Increment:" type="real" default="1" state="normal" optionname="increment" />
+                        <item tag="max_thickness" label="Max Thickness:" type="real" default="20" state="normal" optionname="max_thickness" />
+                        <item tag="prefix" label="Component Prefix:" type="string" default="Surfaces" state="normal" optionname="prefix" />
+                    </options>
+                </popup>
+            </item>
+			<item tag="selsurfs" type="entityselector" selectionname="SurfsSelector" entitytypes="Surfaces" defaultentity="Surfaces" hmselectionmode="append"/>
+
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

@@ -1,0 +1,22 @@
+<root>
+	<context tag="BadElementCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="adjacent" label="Adjacent Elements:" type="int" default="3" from="0" to="5" state="normal" optionname="adjacent" />
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selelems" type="entityselector" selectionname="ElemsSelector" entitytypes="Elements" hmselectionmode="append"/>
+
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+
+	</context>
+</root>

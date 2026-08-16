@@ -1,0 +1,38 @@
+<root>
+	<context tag="CreateStepCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+        <guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="set_gravx" type="real" label="Load X(g):" default="8" optionname="gx" visible="1"/>
+                        <item tag="set_gravy" type="real" label="Load Y(g):" default="8" optionname="gy" visible="1"/>
+                        <item tag="set_gravz" type="real" label="Load Z(g):" default="-8" optionname="gz" visible="1"/>
+                        <item tag="set_start" type="int" from="0" to="9999" default="0" label="Start Freq:" optionname="start" visible="0"/>
+                        <item tag="set_end" type="int" from="0" to="9999" default="0" label="End Freq:" optionname="end" visible="0"/>
+                        <item tag="set_G" type="real" label="Magnitude(g):" default="1" optionname="g" visible="0"/>
+                        <item tag="set_damp" type="real" label="Damp:" default="0.05" optionname="damp" visible="0"/>
+                        <item tag="set_nd" type="int" from="0" to="9999" default="0" optionname="nd" label="Max Order:" visible="0"/>
+
+                        <item tag="name" label="Name Prefix:" default="" type="string" state="normal" optionname="prefix"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="type_chooser" label ="Static">
+                <menu tag="menu1">
+                    <item label="Static" tag="Static" command="hwctx set_type {Static}" />
+                    <item label="FreqResp" tag="FreqResp" command="hwctx set_type {FreqResp}" />
+                    <item label="Mode" tag="Mode" command="hwctx set_type {Mode}" />
+                </menu>
+            </item>
+            <item tag="selelems" type="entityselector" selectorlabel="SPC/D" selectionname="SPCSelector" entitytypes="Elements" defaultentity="Elements" hmselectionmode="append"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

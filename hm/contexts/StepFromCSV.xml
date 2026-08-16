@@ -1,0 +1,12 @@
+<root>
+	<context tag="StepFromCSVCtx">
+
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+        <guidebar>
+            <item tag="CSVFile" type="button" label="ChooseCSV" command="hwctx get_CSV"/>
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

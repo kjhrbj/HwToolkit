@@ -1,0 +1,27 @@
+<root>
+	<context tag="CreateJointCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="type" label="Type:" type="combobox" default="Rbe2-Spring" values="Rbe2-Beam Rbe2-Spring" state="normal" optionname="type" command="hwctx change_type"/>
+                        <item tag="comp_name" label="Name:" type="string" default="Hinge" state="normal" optionname="comp_name"/>
+                        <item tag="axis" label="Rotation Axis:" type="combobox" default="X" values="X Y Z" state="normal" optionname="axis"/>
+                        <item tag="radius" label="Beam Radius:" type="real" default="10" state="normal" optionname="radius" visible="0"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selelems1" type="entityselector" selectionname="NodesSelector1" entitytypes="Nodes" defaultentity="Nodes" hmselectionmode="append"/>
+            <item tag="selelems2" type="entityselector" selectionname="NodesSelector2" entitytypes="Nodes" defaultentity="Nodes" hmselectionmode="append"/>
+            <item tag="selsystem" type="entityselector" selectionname="SystemsSelector" entitytypes="Systems" defaultentity="Systems" hmselectionmode="single"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>

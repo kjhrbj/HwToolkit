@@ -1,0 +1,25 @@
+<root>
+	<context tag="TangentCurveCtx">
+
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+        <guidebar tag="gb">
+            <item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="split" label=" Split Surface"  type="boolcheck" default="ture" state="normal" optionname="split"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selline1" type="entityselector" selectionname="LineSelector1" entitytypes="Line" defaultentity="Line" hmselectionmode="single"/>
+            <item tag="selline2" type="entityselector" selectionname="LineSelector2" entitytypes="Line" defaultentity="Line" hmselectionmode="single"/>
+            <item tag="selsurf" type="entityselector" selectorlabel="Project Surface" selectionname="SurfSelector" entitytypes="Surface" defaultentity="Surface" hmselectionmode="single"/>
+
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+
+	</context>
+</root>

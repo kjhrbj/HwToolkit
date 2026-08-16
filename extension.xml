@@ -1,0 +1,28 @@
+<section name="Extension">
+
+	<entry name="name"				value="HwToolkit" />
+	<entry name="displayName"		value="HwToolkit" />
+	<entry name="resources"			value="hm/images" />
+	<entry name="minProductVersion" value="2023" />
+	<entry name="version"			value="0.1" />
+	<entry name="author"			value="Xiemc" />
+	<entry name="description"		value="HyperWorks toolkit for faster FEM modeling (HyperMesh) and post-processing (HyperView)" />
+	<entry name="supportedClient"	value="HyperWorksDesktop" />
+	<entry name="documentation"		value="None" />
+	<entry name="tclscript"			value="init.tcl" />
+
+	<section name="profile" value="HyperMesh">
+		<entry name="ribbonxml"		value="hm/hm_ribbon.xml" />
+		<entry name="tclscript"		value="hm/hm_init.tcl" />
+		<entry name="contexts"		value="hm/contexts" />
+		<entry name="toolbars"		value="hm/toolbar" />
+	</section>
+
+	<section name="profile" value="HyperView">
+		<entry name="ribbonxml"		value="hv/hv_ribbon.xml" />
+		<entry name="tclscript"		value="hv/hv_init.tcl" />
+		<entry name="contexts"		value="hv/contexts" />
+		<entry name="toolbars"		value="hv/toolbars" />
+	</section>
+
+</section>

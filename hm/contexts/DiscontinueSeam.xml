@@ -1,0 +1,37 @@
+<root>
+	<context tag="DiscontinueSeamCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/>
+
+		<guidebar tag="gb">
+			<item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
+                <popup tag="pp">
+                    <options tag="op">
+                        <item tag="angle" label="Angle:" type="real" default="45" state="normal" optionname="angle" command="hwctx set_parameter {angle}"/>
+                        <item tag="height" label="Seam Height:" type="real" default="0" state="normal" optionname="height" command="hwctx set_parameter {height}"/>
+                        <item tag="length" label="Seam Length:" type="real" default="20" state="normal" optionname="length" command="hwctx set_parameter {length}"/>
+                        <item tag="type" label="Define Type:" type="combobox" default="Number" values="Number Interval" optionname="type" command="hwctx set_type"/>
+                        <item tag="number" label="Number:" type="int" default="5" from="1" to="9999" optionname="number" command="hwctx set_parameter {number}"/>
+                        <item tag="interval" label="Interval:" type="real" default="15" state="normal" optionname="interval" command="hwctx set_parameter {interval}" visible="false" />
+
+                        <item tag="double" label=" Double Side Seam" type="boolcheck" default="0" state="normal" optionname="double" command="hwctx set_parameter {double}"/>
+                        <item tag="auto_height" label=" Auto Seam Height" type="boolcheck" default="1" state="normal" optionname="auto_height" command="hwctx auto_height"/>
+                        <item tag="offset_flag" label=" Offset Seam Line" type="boolcheck" default="1" state="normal" optionname="offset_flag" command="hwctx OnSelectionChange"/>
+                    </options>
+                </popup>
+            </item>
+
+            <item tag="selline" type="entityselector" selectorlabel="Line" selectionname="LineSelector" entitytypes="Line" defaultentity="Line" hmselectionmode="single"/>
+            <item tag="selsurf" type="entityselector" selectorlabel="Surface" selectionname="SurfSelector" entitytypes="Surface" defaultentity="Surface" hmselectionmode="single"/>
+            <item tag="selpoint" type="entityselector" selectorlabel="Start Point" selectionname="PointSelector" entitytypes="Locations" defaultentity="Locations" hmselectionmode="single"/>
+
+            <item tag="reverse" type="button" label="Reverse" command="hwctx reverse"/>
+
+            <item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+
+		</guidebar>
+
+	</context>
+</root>

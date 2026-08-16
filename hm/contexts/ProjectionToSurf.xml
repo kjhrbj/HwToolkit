@@ -1,0 +1,24 @@
+<root>
+	<context tag="ProjectionToSurfCtx">
+        <listener tag="unpost" eventname="ContextUnPost" command="hwctx OnUnpost"/>
+        <listener tag="proceed" eventname="AutoProceed" command="hwctx AutoProceed"/> 
+
+		<guidebar tag="gb">
+			<item tag="dir_chooser" label ="Normally">
+                <menu tag="menu1">
+                    <item label="Normally" tag="Normally" command="hwctx set_direction {Normally}" />
+                    <item label="Direction" tag="Direction" command="hwctx set_direction {Direction}" />
+                </menu>
+            </item>
+
+			<item tag="sellines" type="entityselector" selectionname="EntitiesSelector" entitytypes="Lines Points Nodes Elements" defaultentity="Lines" hmselectionmode="append"/>
+            <item tag="selsurf" type="entityselector" selectionname="SurfSelector" entitytypes="Surfaces" defaultentity="Surfaces" hmselectionmode="single"/>
+			<item tag="seldirec" type="entityselector" selectionname="DirectSelector" entitytypes="Direction Vector" defaultentity="Direction" hmselectionmode="single" visible ="false"/>
+            <item tag="preview" type="button" label="Preview" command="hwctx OnSelectionChange" visible ="false"/>
+
+			<item tag="proceed" image="toolbarActionApplyStrip-16.png" command="hwctx proceed" />
+            <item tag="ok" image="toolbarActionOKStrip-16.png" command="hwctx ok"/>
+            <item tag="cancel" image="toolbarActionCancelStrip-16.png" command="hwctx cancel"/>
+		</guidebar>
+	</context>
+</root>
