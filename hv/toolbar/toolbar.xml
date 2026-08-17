@@ -1,0 +1,8 @@
+<root>
+    <actionlist>
+        <action tag="MeasureMax" tooltip="Measure the max of selection" image="" command="::HvToolkit::MeasureMax::perform"/>
+    </actionlist>
+	<toolbar tag="ToolBar" location="left">
+        <item actiontag="MeasureMax"/>
+	</toolbar>
+</root>

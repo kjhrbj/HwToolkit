@@ -21,8 +21,7 @@
 	<section name="profile" value="HyperView">
 		<entry name="ribbonxml"		value="hv/hv_ribbon.xml" />
 		<entry name="tclscript"		value="hv/hv_init.tcl" />
-		<entry name="contexts"		value="hv/contexts" />
-		<entry name="toolbars"		value="hv/toolbars" />
+		<entry name="toolbars"		value="hv/toolbar" />
 	</section>
 
 </section>

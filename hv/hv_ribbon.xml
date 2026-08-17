@@ -1,15 +1,11 @@
 <root>
     <actionlist>
-        <!-- 脚本化 context 模板（参考 hm/hm_ribbon.xml 的 scontext 用法；HyperView 下需实测） -->
-
+        <action tag="QueryoverSubcase" text="Query over Subcase" tooltip="Query value over all subcase on selected nodes" image="" command="::HvToolkit::QueryoverSubcase::GUI"/>
     </actionlist>
 
     <page tag="Page1" text="HV Tools">
-        <group tag="Group1" text="Contexts">
-
-        </group>
         <group tag="Group2" text="Utilities">
-
+            <action actiontag="QueryoverSubcase"/>
         </group>
     </page>
 </root>

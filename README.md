@@ -17,7 +17,7 @@ HyperWorks 二次开发工具包，用于加速 HyperMesh 前处理建模与 Hyp
 
 ## 目录结构
 
-```
+```text
 HwToolkit/
 ├── extension.xml            # HyperWorks 扩展清单（入口定义）
 ├── init.tcl                 # 扩展入口脚本（声明 HmToolkit / HvToolkit 命名空间）
