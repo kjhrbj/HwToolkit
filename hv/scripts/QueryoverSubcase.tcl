@@ -24,13 +24,18 @@ namespace eval ::HvToolkit::QueryoverSubcase {
         hwtk::label  .qos_diag.lbl -text "Selection Set Ids: " -anchor w
         hwtk::entry  .qos_diag.ent -width 20 -validate key \
             -validatecommand {::HvToolkit::QueryoverSubcase::_valid_new_value %P}
+        hwtk::label  .qos_diag.thr_lbl -text "Allowable Stress: " -anchor w
+        hwtk::entry  .qos_diag.thr -width 20 -validate key \
+            -validatecommand {::HvToolkit::QueryoverSubcase::_valid_threshold %P}
         hwtk::button .qos_diag.ok  -text "Query over Subcase" \
             -command {::HvToolkit::QueryoverSubcase::perform}
 
         # 布局
-        grid .qos_diag.lbl -row 0 -column 0 -padx 10 -pady 8 -sticky w
-        grid .qos_diag.ent -row 0 -column 1 -padx 10 -pady 8 -sticky ew
-        grid .qos_diag.ok  -row 1 -column 0 -columnspan 2 -pady 8
+        grid .qos_diag.lbl     -row 0 -column 0 -padx 10 -pady 8 -sticky w
+        grid .qos_diag.ent     -row 0 -column 1 -padx 10 -pady 8 -sticky ew
+        grid .qos_diag.thr_lbl -row 1 -column 0 -padx 10 -pady 8 -sticky w
+        grid .qos_diag.thr     -row 1 -column 1 -padx 10 -pady 8 -sticky ew
+        grid .qos_diag.ok      -row 2 -column 0 -columnspan 2 -pady 8
         grid columnconfigure .qos_diag 1 -weight 1
 
         # 居中显示（显式设置窗口尺寸，避免 HyperView 不按请求尺寸铺开导致顶部被裁）
@@ -53,6 +58,11 @@ namespace eval ::HvToolkit::QueryoverSubcase {
         return [regexp {^\s*([1-9][0-9]*(\s+[1-9][0-9]*)*)?\s*$} $value]
     }
 
+    # 校验许用强度：允许空值（不进行着色），或正整数（同 Selection Set Ids）
+    proc _valid_threshold {value} {
+        return [regexp {^\s*([1-9][0-9]*)?\s*$} $value]
+    }
+
     # CSV 字段转义：含逗号/引号/换行时用引号包裹，内部引号双写
     proc _csv_escape {s} {
         if {[regexp {[",\r\n]} $s]} {
@@ -63,11 +73,15 @@ namespace eval ::HvToolkit::QueryoverSubcase {
 
     # "确定"回调：校验输入为"空格分隔的正整数列表"，合法后继续处理。
     # 遍历所选 selection set 的各个 subcase，统计每个 subcase 的最大应力，
-    # 导出 CSV 到模型所在目录（模型未保存时回退到当前工作目录）。
+    # 导出 CSV 到模型目录，并调用 write_excel（打包 exe 或本机 python）生成带高亮的 xlsx。
     proc perform {} {
         set selection_sets [string trim [.qos_diag.ent get]]
         if {[llength $selection_sets] eq 0} {return -code error "Invalid Selection Set Ids"}
         HvToolkit::Support lunique selection_set
+
+        # 许用强度：可选，留空则不进行着色；非空按 MaxValue/许用强度 比值着色
+        # （<0.8 不着色 / 0.8~1 黄 / >1 红）
+        set threshold [string trim [.qos_diag.thr get]]
 
         # 输出目录：优先模型文件所在目录；模型未保存（无文件名）时回退当前工作目录
         set model_file [HvToolkit::HvApi::get_model_filename]
@@ -78,7 +92,7 @@ namespace eval ::HvToolkit::QueryoverSubcase {
         set fp [open $csv w]
         fconfigure $fp -encoding utf-8
         # BOM：保证中文 Windows 下 Excel 直接打开 CSV 不乱码
-        puts $fp "\uFEFFSubcase,SelectionSet,MaxValue,@EntityID,@TimeStep"
+        puts $fp "\uFEFFSelectionSet,Subcase,MaxValue,EntityID,TimeStep"
 
         foreach set $selection_sets {
             set set_label [dict get [HvToolkit::HvApi::info_selectionset $set] label]
@@ -100,11 +114,26 @@ namespace eval ::HvToolkit::QueryoverSubcase {
                 }
                 set si_label [HvToolkit::HvApi::get_simulation_label $sc $max_si_id]
                 # max_value 可能是科学计数法（如 1.23e+05），输出时四舍五入为整数
-                puts $fp "[_csv_escape $sc_label],[_csv_escape $set_label],[expr {round($max_value)}],${max_entity_id},[_csv_escape $si_label]"
+                puts $fp "[_csv_escape $set_label],[_csv_escape $sc_label],[expr {round($max_value)}],${max_entity_id},[_csv_escape $si_label]"
             }
         }
         close $fp
 
-        tk_messageBox -icon info -message "CSV Save:\n$csv"
+        # 调用转换器生成带高亮的 xlsx：优先插件自带的 exe，其次本机 python
+        set script [file join $HvToolkit::scripts_dir "write_excel.py"]
+        set exe [file join $HvToolkit::scripts_dir "bin" "write_excel.exe"]
+        set xlsx [file join $out_dir "${base}_query.xlsx"]
+
+        set converter [list [file nativename $exe]]
+        # set converter [list python [file nativename $script]]
+
+        set args [list [file nativename $csv] [file nativename $xlsx]]
+        if {$threshold ne ""} {lappend args $threshold}
+        if {[catch {exec {*}$converter {*}$args} out]} {
+            tk_messageBox -icon error -message "Fail to convert xlsx\n$out"
+            return
+        }
+
+        tk_messageBox -icon info -message "Excel Save:\n$xlsx"
     }
 }
