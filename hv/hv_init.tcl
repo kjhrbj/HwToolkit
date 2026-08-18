@@ -4,18 +4,7 @@ namespace eval ::HvToolkit {
     variable scripts_dir  "$HvToolkit::script_dir/scripts/"
 
     variable debug 1
-
-    proc debug {} {
-        if {!$HvToolkit::debug} {return 0}
-        foreach script [glob -directory "$HvToolkit::lib_dir" *.tcl] {
-            puts "run:$script"
-            source $script
-        }
-        foreach script [glob -directory "$HvToolkit::scripts_dir" *.tcl] {
-            puts "run:$script"
-            source $script
-        }
-    }
+    
 }
 
 foreach lib [glob -directory "$HvToolkit::lib_dir" *.tcl] {
