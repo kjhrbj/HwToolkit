@@ -5,7 +5,6 @@ namespace eval ::HvToolkit::QueryoverSubcase {
     # 入口：弹出非模态输入对话框。
     # 用户在 entry 输入字符串，点"确定"后打印输入值到控制台并关闭窗口。
     proc GUI {} {
-        puts GUI
         # 若对话框已存在，先删除其所有子窗口再删除主窗口，随后重建
         if {[winfo exists .qos_diag]} {
             foreach child [winfo children .qos_diag] {
@@ -71,6 +70,51 @@ namespace eval ::HvToolkit::QueryoverSubcase {
         return $s
     }
 
+    # ---- 进度条 ----
+    # HyperView 内嵌 Tcl 没有官方的 statuswindow 命令（那是 HyperMesh 的）。
+    # 用内置 ::progressbar 控件（行为与 ttk::progressbar 一致）：determinate + maximum/value。
+    proc _progress_open {total} {
+        if {[winfo exists .qos_prog]} {destroy .qos_prog}
+        hwtk::toplevel .qos_prog
+        wm title .qos_prog "Query over Subcase"
+        wm resizable .qos_prog 0 0
+        wm protocol .qos_prog WM_DELETE_WINDOW {}   ;# 处理中禁止手动关闭
+
+        hwtk::label .qos_prog.lbl -text "Preparing..." -anchor w
+        hwtk::progressbar .qos_prog.bar -mode determinate -length 450 -maximum $total -value 0
+        hwtk::label .qos_prog.pct -text "0%" -anchor e
+
+        grid .qos_prog.lbl -row 0 -column 0 -columnspan 2 -sticky ew -padx 12 -pady 10
+        grid .qos_prog.bar -row 1 -column 0 -columnspan 2 -sticky ew -padx 12 -pady 14
+        grid .qos_prog.pct -row 2 -column 1 -sticky e -padx 12 -pady 8
+
+        # 居中显示（同 GUI 的做法）
+        set w [winfo reqwidth  .qos_prog]
+        set h [winfo reqheight .qos_prog]
+        set x [expr {([winfo screenwidth  .qos_prog] - $w) / 2}]
+        set y [expr {([winfo screenheight .qos_prog] - $h) / 3}]
+        wm geometry .qos_prog +$x+$y
+        wm deiconify .qos_prog
+
+        update idletasks
+    }
+
+    # 更新进度：done/total（0..total），text 为状态文字；用 update idletasks 强制重绘。
+    # 用 update idletasks 而非 update：只重绘、不处理用户输入事件，天然防重入。
+    proc _progress_set {done total text} {
+        if {![winfo exists .qos_prog]} {return}
+        set pct [expr {$total > 0 ? int(100.0 * $done / $total) : 0}]
+        .qos_prog.bar configure -value $done
+        .qos_prog.pct configure -text "$pct%"
+        if {$text ne ""} {.qos_prog.lbl configure -text $text}
+        update idletasks
+    }
+
+    # 关闭进度窗口
+    proc _progress_close {} {
+        if {[winfo exists .qos_prog]} {destroy .qos_prog}
+    }
+
     # "确定"回调：校验输入为"空格分隔的正整数列表"，合法后继续处理。
     # 遍历所选 selection set 的各个 subcase，统计每个 subcase 的最大应力，
     # 导出 CSV 到模型目录，并调用 write_excel（打包 exe 或本机 python）生成带高亮的 xlsx。
@@ -94,29 +138,47 @@ namespace eval ::HvToolkit::QueryoverSubcase {
         # BOM：保证中文 Windows 下 Excel 直接打开 CSV 不乱码
         puts $fp "\uFEFFSelectionSet,Subcase,MaxValue,EntityID,TimeStep"
 
-        foreach set $selection_sets {
-            set set_label [dict get [HvToolkit::HvApi::info_selectionset $set] label]
-            set stress_data [HvToolkit::HvApi::get_contour_value $set "Element Stresses (2D & 3D)"]
-            foreach {sc sc_data} $stress_data {
-                set sc_label [HvToolkit::HvApi::get_subcase_label $sc]
-                set max_value 0
-                set max_si_id  0
-                set max_entity_id 0
-                # 遍历 subcase 下所有 simulation 的节点/单元，找到最大值并记录
-                foreach {si si_data} $sc_data {
-                    foreach {entity entity_data} $si_data {
-                        if {$entity_data > $max_value} {
-                            set max_value  $entity_data
-                            set max_si_id  $si
-                            set max_entity_id $entity
+        set set_num [llength $selection_sets]
+        set sc_num [llength [HvToolkit::HvApi::get_subcase_list]]
+        set total [expr $set_num * $sc_num]
+        _progress_open $total
+        set done 0
+        if {[catch {
+            foreach set $selection_sets {
+                set set_label [dict get [HvToolkit::HvApi::info_selectionset $set] label]
+                set stress_data [HvToolkit::HvApi::get_contour_value $set "Element Stresses (2D & 3D)"]
+                set done_sc 0
+                foreach {sc sc_data} $stress_data {
+                    _progress_set $done $total "Processing ([expr $done * $sc_num + $done_sc]/$total): Selection Set $set"
+                    set sc_label [HvToolkit::HvApi::get_subcase_label $sc]
+                    set max_value 0
+                    set max_si_id  0
+                    set max_entity_id 0
+                    # 遍历 subcase 下所有 simulation 的节点/单元，找到最大值并记录
+                    foreach {si si_data} $sc_data {
+                        foreach {entity entity_data} $si_data {
+                            if {$entity_data > $max_value} {
+                                set max_value  $entity_data
+                                set max_si_id  $si
+                                set max_entity_id $entity
+                            }
                         }
                     }
+                    set si_label [HvToolkit::HvApi::get_simulation_label $sc $max_si_id]
+                    # max_value 可能是科学计数法（如 1.23e+05），输出时四舍五入为整数
+                    incr done_sc
+                    puts $fp "[_csv_escape $set_label],[_csv_escape $sc_label],[expr {round($max_value)}],$max_entity_id,[_csv_escape $si_label]"
                 }
-                set si_label [HvToolkit::HvApi::get_simulation_label $sc $max_si_id]
-                # max_value 可能是科学计数法（如 1.23e+05），输出时四舍五入为整数
-                puts $fp "[_csv_escape $set_label],[_csv_escape $sc_label],[expr {round($max_value)}],${max_entity_id},[_csv_escape $si_label]"
+                incr done
             }
+        } err]} {
+            # 出错清理：关进度窗口、关文件、删除半成品 CSV
+            _progress_close
+            close $fp
+            # file delete -force $csv
+            return -code error $err
         }
+        _progress_close
         close $fp
 
         # 调用转换器生成带高亮的 xlsx：优先插件自带的 exe，其次本机 python
@@ -125,7 +187,7 @@ namespace eval ::HvToolkit::QueryoverSubcase {
         set xlsx [file join $out_dir "${base}_query.xlsx"]
 
         set converter [list [file nativename $exe]]
-        # set converter [list python [file nativename $script]]
+        set converter [list python [file nativename $script]]
 
         set args [list [file nativename $csv] [file nativename $xlsx]]
         if {$threshold ne ""} {lappend args $threshold}
@@ -134,6 +196,6 @@ namespace eval ::HvToolkit::QueryoverSubcase {
             return
         }
 
-        tk_messageBox -icon info -message "Excel Save:\n$xlsx"
+        tk_messageBox -icon info -message "Query successfully and excel save at:\n$xlsx"
     }
 }

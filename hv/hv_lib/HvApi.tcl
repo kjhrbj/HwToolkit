@@ -71,7 +71,6 @@ namespace eval HvToolkit::HvApi {
             return -code error "Failed to get query control handle"
         }
         qc$t SetSelectionSet [sel$t GetID]
-        puts "$entity_type.id contour.value"
         qc$t SetQuery "$entity_type.id contour.value"
 
         # 遍历 subcase（分析步） -> simulation（时间步）
@@ -186,6 +185,26 @@ namespace eval HvToolkit::HvApi {
         return $label
     }
 
+    proc get_subcase_list {} {
+        hwi OpenStack
+        set t [expr rand()][clock milliseconds]
+
+        hwi GetActiveClientHandle cl$t
+
+        if {[cl$t GetModelHandle m$t [cl$t GetActiveModel mid]] ne "m$t"} {
+            hwi CloseStack
+            return -code error "Failed to get model handle"
+        }
+        if {[m$t GetResultCtrlHandle rc$t] ne "rc$t"} {
+            hwi CloseStack
+            return -code error "Failed to get result control handle"
+        }
+
+        set sc_list [rc$t GetSubcaseList]
+        hwi CloseStack
+        return $sc_list
+    }
+
     proc get_simulation_label {sc index} {
         hwi OpenStack
         set t [expr rand()][clock milliseconds]
@@ -203,7 +222,7 @@ namespace eval HvToolkit::HvApi {
 
         set label [rc$t GetSimulationLabel $sc $index]
         hwi CloseStack
-        
+
         return $label
     }
 
