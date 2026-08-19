@@ -130,6 +130,17 @@ itcl::body ::HmToolkit::HoleRbe2Ctx::__perform {args} {
         incr index
     }
 
+    if {$type eq "One-Rbe2"} {
+        foreach {index hole_nodes_list} $hole_nodes {
+            set rbe_nodes {}
+            foreach hole_nodes $hole_nodes_list {
+                lappend rbe_nodes {*}$hole_nodes
+            }
+            HmToolkit::Modify Create Rbe2 $rbe_nodes
+        }
+        return 1
+    }
+
     set bolt_rod_nodes_dict {}
     foreach {index hole_nodes_list} $hole_nodes {
         set rbe_nodes {}
@@ -142,13 +153,8 @@ itcl::body ::HmToolkit::HoleRbe2Ctx::__perform {args} {
             dict lappend bolt_rod_nodes_dict $index {*}$rbe_nodes
         }
     }
-    puts "bolt_rod_nodes_dict: $bolt_rod_nodes_dict"
+   
     switch $type {
-        "Rbe2-Rbe2" {
-            foreach {index rbe_nodes} $bolt_rod_nodes_dict {
-                HmToolkit::Modify Create Rbe2 $rbe_nodes
-            }
-        }
         "Rbe2-Spring" {
             set comp_spring $comp_name-Spring
             if {![set comp [HmToolkit::Query exist comps name=$comp_spring]]} {set comp [HmToolkit::Modify Create comps $comp_spring]}

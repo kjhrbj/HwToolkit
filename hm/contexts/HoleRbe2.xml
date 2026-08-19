@@ -7,7 +7,7 @@
             <item tag="options" image="fdmTextToolbarDropdownStrip-16.png" indicator="always">
                 <popup tag="pp">
                     <options tag="op">
-                        <item tag="Type" label="Type:" type="combobox" default="Rbe2-Rbe2" values="Rbe2-Rbe2 Rbe2-Spring" state="normal" optionname="type"/>
+                        <item tag="Type" label="Type:" type="combobox" default="One-Rbe2" values="One-Rbe2 Rbe2-Spring" state="normal" optionname="type"/>
                         <item tag="Name" label="Component:" type="string" default="HoleConnector" state="normal" optionname="name" />
                         <item tag="MaxDiameter" label="Max Diameter:" type="real" default="32" state="normal" optionname="max_d" />
                         <item tag="MinDiameter" label="Min Diameter:" type="real" default="1" state="normal" optionname="min_d" />
